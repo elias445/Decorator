@@ -1,7 +1,7 @@
 package Exemplo_cafe;
 
 public class CafeDecorator implements Cafe {
-    protected   Cafe cafeDecorado;
+    protected Cafe cafeDecorado;
     public CafeDecorator(Cafe cafe) {
         this.cafeDecorado = cafe;
     }
