@@ -1,18 +1,51 @@
 package solucao_problema;
 
+import java.util.Scanner;
+
 public class MainSolucao {
     public static void main(String[] args) {
-        System.out.println("--- CLIENTE 1: Quer apenas Email ---");
-        Notificador cliente1 = new NotificadorEmail();
-        cliente1.enviar("Bem-vindo ao sistema!");
+        Scanner scanner = new Scanner(System.in);
 
-        System.out.println("\n--- CLIENTE 2: Quer Email e SMS ---");
-        Notificador cliente2 = new NotificadorSMS(new NotificadorEmail());
-        cliente2.enviar("Sua senha foi alterada.");
+        Notificador alerta = new NotificadorEmail();
+        System.out.println("\nCanal base: Email configurado.");
+        System.out.println();
+        System.out.print("Deseja adicionar envio por SMS?\n1- Sim\n2- Não ");
+        String opcaoSms = scanner.nextLine().trim();
 
-        System.out.println("\n--- CLIENTE 3: Pacote Completo (Email, SMS e WhatsApp) ---");
-        Notificador cliente3 = new NotificadorWhatsApp(new NotificadorSMS(new NotificadorEmail()));
+        switch (opcaoSms) {
+            case "1":
+                alerta = new NotificadorSMS(alerta);
+                System.out.println("[+] SMS adicionado com sucesso!");
+                break;
+            case "2":
+                System.out.println("[-] SMS ignorado.");
+                break;
+            default:
+                System.out.println("[!] Opção inválida. SMS ignorado por padrão.");
+                break;
+        }
+        System.out.print("Deseja adicionar envio por WhatsApp?\n1- Sim\n2- Não ");
+        String opcaoWpp = scanner.nextLine().trim();
 
-        cliente3.enviar("Alerta de segurança crítico!");
+        switch (opcaoWpp) {
+            case "1":
+                alerta = new NotificadorWhatsApp(alerta);
+                System.out.println("[+] WhatsApp adicionado com sucesso!");
+                break;
+            case "2":
+                System.out.println("[-] WhatsApp ignorado.");
+                break;
+            default:
+                System.out.println("[!] Opção inválida. WhatsApp ignorado por padrão.");
+                break;
+        }
+        System.out.println("\n--- DISPARANDO NOTIFICAÇÃO ---");
+        System.out.print("Digite a mensagem de alerta: ");
+        String mensagem = scanner.nextLine();
+
+        System.out.println("\nResultado final do disparo:");
+        alerta.enviar(mensagem);
+
+        scanner.close();
     }
 }
